@@ -1,18 +1,4 @@
 let addToy = false;
-
-document.addEventListener("DOMContentLoaded", () => {
-  const addBtn = document.querySelector("#new-toy-btn");
-  const toyFormContainer = document.querySelector(".container");
-  addBtn.addEventListener("click", () => {
-    // hide & seek with the form
-    addToy = !addToy;
-    if (addToy) {
-      toyFormContainer.style.display = "block";
-    } else {
-      toyFormContainer.style.display = "none";
-    }
-  });
-
   const toyCollection = document.querySelector("#toy-collection");
   const toyForm = document.querySelector(".add-toy-form");
 
@@ -39,10 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
     cardP.textContent = `${toy.likes} Likes`;
     card.appendChild(cardP);
 
-    const cardButton = document.createElement("btn");
+    const cardButton = document.createElement("button");
     cardButton.className = "like-btn";
     cardButton.id = toy.id;
     cardButton.textContent = "Like ❤️";
+
+    //can also append mulitple elements to a parent like this: 
+    // card.appendChild(cardH2, cardImage, cardP, cardButton)
 
     cardButton.addEventListener("click", () => {
       fetch(`http://localhost:3000/toys/${toy.id}`, {
@@ -61,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     card.appendChild(cardButton);
-
     toyCollection.appendChild(card);
   }
 
@@ -85,4 +73,31 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     toyForm.reset();
   });
-});
+
+
+// alternative renderToy function using innerHTML:
+
+// function renderToy (toy) {
+//   const card = createElement('div')
+//   card.className ="card"
+
+//   card.innerHTML = `
+//   <h2></h2>
+//   <imgclass="toy-avatar" />
+//   <p>Likes</p>
+
+//   `
+// now we can look thru the div we just made to change the innertext! so mwe keep it safe! 
+
+//   div.querySelector('h2').innerText = toyObj.name
+// div.querySelector('img').src = toyObj.image
+// div.querySelector('p').innerText = 
+
+
+
+
+//   card.appendChild('all the elements?')
+//   toyCollection.appendChild(card)
+
+// }
+
