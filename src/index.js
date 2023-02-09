@@ -1,6 +1,22 @@
 let addToy = false;
-  const toyCollection = document.querySelector("#toy-collection");
-  const toyForm = document.querySelector(".add-toy-form");
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const addBtn = document.querySelector("#new-toy-btn");
+    const toyFormContainer = document.querySelector(".container");
+    const toyCollection = document.querySelector("#toy-collection");
+    const toyForm = document.querySelector(".add-toy-form");
+    
+    addBtn.addEventListener("click", () => {
+      // hide & seek with the form
+      addToy = !addToy;
+      if (addToy) {
+        toyFormContainer.style.display = "block";
+      } else {
+        toyFormContainer.style.display = "none";
+      }
+    })
+
+    
 
   fetch("http://localhost:3000/toys")
     .then((resp) => resp.json())
@@ -30,28 +46,30 @@ let addToy = false;
     cardButton.id = toy.id;
     cardButton.textContent = "Like ❤️";
 
-    //can also append mulitple elements to a parent like this: 
+    // can also append mulitple elements to a parent like this: 
     // card.appendChild(cardH2, cardImage, cardP, cardButton)
+  card.appendChild(cardButton);
+  toyCollection.appendChild(card);
 
-    cardButton.addEventListener("click", () => {
+    cardButton.addEventListener("click", (e) => {
+      const likesElement = e.target.parentElement.querySelector('p')
+      likesArray = likesElement.innerText.split(' ')
+      const newLikes = parseInt(likesArray[0]) + 1
+
       fetch(`http://localhost:3000/toys/${toy.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          likes: (toy.likes += 1),
-        }),
+        body: JSON.stringify({likes: newLikes})
       })
         .then((resp) => resp.json())
-        .then((toy) => {
-          cardP.textContent = `${toy.likes} Likes`;
-        });
+        .then((toyObj) => {
+          cardP.innerText = `${newLikes} Likes`
+        })
     });
-
-    card.appendChild(cardButton);
-    toyCollection.appendChild(card);
   }
+
 
   toyForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -72,8 +90,23 @@ let addToy = false;
         renderToy(toy);
       });
     toyForm.reset();
-  });
+  })
+})
 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  // */
 
 // alternative renderToy function using innerHTML:
 
@@ -92,12 +125,3 @@ let addToy = false;
 //   div.querySelector('h2').innerText = toyObj.name
 // div.querySelector('img').src = toyObj.image
 // div.querySelector('p').innerText = 
-
-
-
-
-//   card.appendChild('all the elements?')
-//   toyCollection.appendChild(card)
-
-// }
-
